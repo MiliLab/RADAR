@@ -1,8 +1,7 @@
-<div align="center">
 
 <h1 align="center">Seeing Clearly without Training</h1>
 
-<p align="center"><b>Mitigating Hallucinations in Multimodal LLMs for Remote Sensing</b></p>
+<p align="center"><strong>Mitigating Hallucinations in Multimodal LLMs for Remote Sensing</strong></p>
 
 <p align="center">
   <b>Yi Liu</b><sup>1,2</sup> &nbsp; <b>Jing Zhang</b><sup>1,2</sup><code>†</code> &nbsp; <b>Di Wang</b><sup>1,2</sup><code>†</code> &nbsp; <b>Xiaoyu Tian</b><sup>3</sup> &nbsp; <b>Haonan Guo</b><sup>1,2</sup> &nbsp; <b>Bo Du</b><sup>1,2</sup><code>†</code>
@@ -18,19 +17,17 @@
 
 
 <p align="center">
+  <a href="https://github.com/MiliLab/RADAR"><img src="https://img.shields.io/badge/🌐-Project%20Page-6c757d?style=flat-square" alt="Project"></a>
+  &nbsp;
   <a href="https://arxiv.org/abs/2603.02754"><img src="https://img.shields.io/badge/arXiv-2603.02754-b31b1b?style=flat-square" alt="arXiv"></a>
   &nbsp;
   <a href="https://huggingface.co/datasets/LIUYIfasdf/RSHBench"><img src="https://img.shields.io/badge/📊-Data%20(RSHBench)-ffcc00?style=flat-square" alt="Data"></a>
 </p>
 
 
-
 <p align="center">
   If you find this project helpful, please consider giving it a <strong>⭐ star</strong>!
 </p>
-
-
-
 
 ---
 
@@ -50,36 +47,13 @@ Multimodal large language models (MLLMs) suffer from pronounced **hallucinations
 
 Extensive experiments show that RADAR consistently improves RS-VQA accuracy (e.g. +2%–4% on representative benchmarks) and reduces hallucination rates (e.g. ~10% reduction on RSHBench).
 
----
-
-## 📷 Figures from the Paper
-
-*Place the figure files exported from the paper in the `img/` folder (e.g. `motivation.png`, `method.png`, `show.png`). PNG is recommended for display on GitHub. If the files are missing, the image placeholders below will show as broken links until you add them.*
-
-### Two grounding failures (motivation)
-
-**Type 1 (Cannot find):** model attention becomes diffuse and is distracted by irrelevant regions, resulting in missed target localization.  
-**Type 2 (Cannot see clearly):** attention covers the correct region, but the visual evidence is too small or ambiguous for fine-grained recognition.
-
-![Motivation](img/motivation.png)
-
-*Figure 1: Two grounding failures underlying RS-VQA hallucinations.*
-
 ### Query-Conditioned Relative Attention (QCRA)
 
 Given an image and task-focused query vs. global-comprehension query, we derive layer-wise relative attention and aggregate top-$k$ layers to produce a query-conditioned heatmap for region selection.
+<img width="3600" height="1617" alt="method" src="https://github.com/user-attachments/assets/0f46e4a6-caa8-41fd-aefa-0df4ec0d95d9" />
 
-![Method](img/method.png)
 
-*Figure 2: QCRA pipeline — relative attention contrast and multi-scale evidence construction.*
-
-### Qualitative examples
-
-QCRA heatmaps from *where*-oriented (Stage1) and *what*-oriented (Stage2) queries; dashed boxes mark regions selected for zoom-in evidence extraction.
-
-![Qualitative](img/show.png)
-
-*Figure 3: Qualitative examples of RADAR's progressive evidence refinement.*
+*Figure 1: QCRA pipeline — relative attention contrast and multi-scale evidence construction.*
 
 ---
 
@@ -87,21 +61,19 @@ QCRA heatmaps from *where*-oriented (Stage1) and *what*-oriented (Stage2) querie
 
 ```
 msswift/
-├── new_start.py          # Main inference with RADAR (Qwen2.5-VL / Qwen3-VL)
-├── new_start_llava.py    # RADAR inference for LLaVA / LLaVA-OneVision
-├── qwen2_5_methods.py   # QCRA & RADAR logic for Qwen2.5-VL
-├── llava_methods.py     # QCRA & RADAR logic for LLaVA series
-├── model_infer.sh       # Multi-GPU parallel inference
-├── add_chunk.py         # Merge chunked inference results
-├── get_score.py         # VQA accuracy scoring (LRS-VQA, MME, LHRS, etc.)
 ├── RSHBench/
 │   ├── infer.py         # Run model inference (reasoning + answer)
 │   ├── eval.py          # Multi-judge hallucination evaluation
 │   ├── score.py         # Aggregate HR and subtype statistics
 │   └── score_judge.py   # Judge reliability (LOO, agreement)
 ├── prompt/              # COT, hallucination judge prompts
-├── img/                 # Paper figures (motivation, method, show)
-├── example_paper.tex    # Paper LaTeX source
+├── infer_qwen.py        # Main inference with RADAR 
+├── infer_llava.py       # RADAR inference for LLaVA 
+├── qwen_methods.py      # QCRA & RADAR logic for Qwen-VL
+├── llava_methods.py     # QCRA & RADAR logic for LLaVA 
+├── model_infer.sh       # Multi-GPU parallel inference
+├── add_chunk.py         # Merge chunked inference results
+├── get_score.py         # VQA accuracy scoring 
 └── README.md
 ```
 
@@ -124,58 +96,42 @@ pip install torch torchvision transformers pillow numpy tqdm
 # For LLaVA/OneVision: ensure swift and compatible transformers are installed
 ```
 
-If a `requirements.txt` is provided in the repo, use:
-
-```bash
-pip install -r requirements.txt
-```
-
 ---
 
 ## 💡 Demo & Usage
 
-### Supported Models
+### Run RADAR Inference 
 
-| Type                | Models                                                    |
-| ------------------- | --------------------------------------------------------- |
-| **Vision-Language** | Qwen2.5-VL / Qwen3-VL series, LLaVA-1.5 / LLaVA-OneVision |
-| **Backbone**        | GeoZero, general MLLMs (with RADAR plug-in)               |
-
-### Run RADAR Inference (Single GPU)
-
-**Qwen2.5-VL / Qwen3-VL:**
+** Qwen-VL:**
 
 ```bash
-python new_start.py \
+python infer_qwen.py \
     --model qwen3_4b \
-    --task lhrs \
+    --task MME-RealWorld-RS \
     --att 640 \
     --total_chunks 1 \
     --chunk_id 0 \
     --save_path ./outputs \
-    --topk stage1 \
-    --select only_layer2
+    --stage stage1 \
 ```
 
 **LLaVA / LLaVA-OneVision:**
 
 ```bash
-python new_start_llava.py \
+python infer_llava.py \
     --model_name your_llava_model \
-    --task lhrs \
+    --task MME-RealWorld-RS \
     --save_path ./outputs
 ```
 
 ### Key Options
 
-| Option                          | Description                                                  |
-| ------------------------------- | ------------------------------------------------------------ |
-| `--model`                       | Model alias (e.g. `qwen3_4b`, `geozero`)                     |
-| `--task`                        | Dataset: `lhrs`, `lrsbench`, `MME_RealWorld`, `xrlsbench`, etc. |
-| `--att`                         | Max side length for attention/resize (e.g. 640)              |
-| `--total_chunks` / `--chunk_id` | Data sharding for multi-GPU                                  |
-| `--topk`                        | RADAR stage selection (`stage1` = where-only; full = where+what) |
-| `--select`                      | Layer selection for QCRA (e.g. `only_layer2`, `select_layer`) |
+| Option                          | Description                                      |
+| ------------------------------- | ------------------------------------------------ |
+| `--model`                       | Model alias (e.g. `qwen3_4b`, `geozero`)         |
+| `--task`                        | Dataset: `lhrs`, `lrsbench`, `MME_RealWorld`etc. |
+| `--Image_size`                  | Max side length for attention/resize (e.g. 640)  |
+| `--total_chunks` / `--chunk_id` | Data sharding for multi-GPU                      |
 
 RADAR is **training-free**: it uses the model’s internal attention to compute QCRA, runs a focus test, and optionally crops to question-relevant regions before generating the final answer.
 
@@ -317,9 +273,18 @@ Accuracy on LRS-VQA (FAIR, Bridge, STAR, AA), MME-RealWorld-RS (Position, Color,
 
 ---
 
+### Qualitative examples
+
+QCRA heatmaps from *where*-oriented (Stage1) and *what*-oriented (Stage2) queries; dashed boxes mark regions selected for zoom-in evidence extraction.
+
+
+<img width="3271" height="1327" alt="show" src="https://github.com/user-attachments/assets/25a07ffe-8b16-4d14-9306-3e88977a424f" />
+
+*Figure 3: Qualitative examples of RADAR's progressive evidence refinement.*
+
 ## 📊 Data
 
-RSHBench evaluation set (371 image–question pairs) and related data:
+RSHBench evaluation set and related data:
 
 - **Dataset:** [RSHBench on Hugging Face](https://huggingface.co/datasets/LIUYIfasdf/RSHBench)
 
@@ -330,11 +295,12 @@ RSHBench evaluation set (371 image–question pairs) and related data:
 If you use this code or RSHBench in your research, please cite:
 
 ```bibtex
-@inproceedings{liu2026seeing,
-  title     = {Seeing Clearly without Training: Mitigating Hallucinations in Multimodal LLMs for Remote Sensing},
-  author    = {Yi Liu and Jing Zhang and Di Wang and Xiaoyu Tian and Haonan Guo and Bo Du},
-  booktitle = {ICML},
-  year      = {2026}
+@article{liu2026radar,
+  title={Seeing Clearly without Training: Mitigating Hallucinations in Multimodal LLMs for Remote Sensing},
+  author={Liu, Yi and Zhang, Jing and Wang, Di and Tian, Xiaoyu and Guo, Haonan and Du, Bo},
+  journal={arXiv preprint arXiv:2603.02754},
+  year={2026},
+  doi={10.48550/arXiv.2603.02754}
 }
 ```
 
@@ -343,3 +309,4 @@ If you use this code or RSHBench in your research, please cite:
 ## 🤝 Acknowledgements
 
 This work is supported by Wuhan University, Zhongguancun Academy, and Chongqing University. We thank the communities behind LRS-VQA, MME-RealWorld-RS, LHRS-Bench, and related MLLM and remote sensing benchmarks.
+
