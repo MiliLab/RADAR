@@ -1,13 +1,36 @@
-# Seeing Clearly without Training
+<div align="center">
 
-**Mitigating Hallucinations in Multimodal LLMs for Remote Sensing**
+<h1 align="center">Seeing Clearly without Training</h1>
 
-**Authors:** Yi Liu, Jing Zhang, Di Wang, Xiaoyu Tian, Haonan Guo, Bo Du  
-**Affiliations:** School of Computer Science, Wuhan University · Zhongguancun Academy · School of Computer Science, Chongqing University  
+<p align="center"><b>Mitigating Hallucinations in Multimodal LLMs for Remote Sensing</b></p>
 
-**📄 [Paper (arXiv)](https://arxiv.org/abs/2603.02754)** · **📊 [Data (RSHBench on Hugging Face)](https://huggingface.co/datasets/LIUYIfasdf/RSHBench)**
+<p align="center">
+  <b>Yi Liu</b><sup>1,2</sup> &nbsp; <b>Jing Zhang</b><sup>1,2</sup><code>†</code> &nbsp; <b>Di Wang</b><sup>1,2</sup><code>†</code> &nbsp; <b>Xiaoyu Tian</b><sup>3</sup> &nbsp; <b>Haonan Guo</b><sup>1,2</sup> &nbsp; <b>Bo Du</b><sup>1,2</sup><code>†</code>
+</p>
 
-If you find this project helpful, please consider giving it a star! ⭐
+
+<p align="center">
+  <sup>1</sup> School of Computer Science, Wuhan University, China &nbsp;&nbsp;|&nbsp;&nbsp; <sup>2</sup> Zhongguancun Academy, China &nbsp;&nbsp;|&nbsp;&nbsp; <sup>3</sup> School of Computer Science, Chongqing University, China
+</p>
+<p align="center">
+  <small><code>†</code> Corresponding Author</small>
+</p>
+
+
+<p align="center">
+  <a href="https://arxiv.org/abs/2603.02754"><img src="https://img.shields.io/badge/arXiv-2603.02754-b31b1b?style=flat-square" alt="arXiv"></a>
+  &nbsp;
+  <a href="https://huggingface.co/datasets/LIUYIfasdf/RSHBench"><img src="https://img.shields.io/badge/📊-Data%20(RSHBench)-ffcc00?style=flat-square" alt="Data"></a>
+</p>
+
+
+
+<p align="center">
+  If you find this project helpful, please consider giving it a <strong>⭐ star</strong>!
+</p>
+
+
+
 
 ---
 
