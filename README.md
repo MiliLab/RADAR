@@ -17,8 +17,6 @@
 
 
 <p align="center">
-  <a href="https://github.com/MiliLab/RADAR"><img src="https://img.shields.io/badge/🌐-Project%20Page-6c757d?style=flat-square" alt="Project"></a>
-  &nbsp;
   <a href="https://arxiv.org/abs/2603.02754"><img src="https://img.shields.io/badge/arXiv-2603.02754-b31b1b?style=flat-square" alt="arXiv"></a>
   &nbsp;
   <a href="https://huggingface.co/datasets/LIUYIfasdf/RSHBench"><img src="https://img.shields.io/badge/📊-Data%20(RSHBench)-ffcc00?style=flat-square" alt="Data"></a>
